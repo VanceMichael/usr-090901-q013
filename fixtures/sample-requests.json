@@ -1,0 +1,27 @@
+[
+  {
+    "schedule_id": "lab-schedule-0003",
+    "timezone": "Asia/Shanghai",
+    "requests": [
+      {
+        "request_id": "REQ-ARM-301",
+        "device_id": "ARM-07",
+        "zone_id": "ZONE-C",
+        "operator_id": "OP-101",
+        "starts_at": "2026-09-09T09:00:00+08:00",
+        "ends_at": "2026-09-09T10:00:00+08:00",
+        "priority": 4,
+        "charging_minutes_after": 20
+      },
+      {
+        "request_id": "REQ-ROVER-302",
+        "device_id": "ROVER-02",
+        "zone_id": "ZONE-D",
+        "operator_id": "OP-202",
+        "starts_at": "2026-09-09T09:30:00+08:00",
+        "ends_at": "2026-09-09T10:15:00+08:00",
+        "priority": 3
+      }
+    ]
+  }
+]
