@@ -1,0 +1,16 @@
+[
+  {
+    "plan_id": "lab-demo-3",
+    "zone_id": "ZONE-C",
+    "operator_level": "L2",
+    "certificate_expires": "2026-12-31",
+    "stages": [
+      {
+        "device": "arm-7",
+        "action": "lift",
+        "speed": 0.4,
+        "payload_kg": 3.0
+      }
+    ]
+  }
+]

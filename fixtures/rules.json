@@ -1,0 +1,10 @@
+{
+  "version": "2026-09-08",
+  "theme": "具身智能产业学院成立",
+  "reason_codes": [
+    "EMBODIED_SAFETY",
+    "PLAN_VALIDATION",
+    "CREDENTIAL_EXPIRY"
+  ],
+  "notes": "Deterministic evaluation fixture; implementation must not fetch remote data."
+}

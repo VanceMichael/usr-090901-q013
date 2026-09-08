@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "具身智能实验安全门禁判定服务 request",
+  "type": "object",
+  "required": [
+    "plan_id",
+    "zone_id",
+    "operator_level",
+    "certificate_expires",
+    "stages"
+  ],
+  "properties": {
+    "plan_id": {},
+    "zone_id": {},
+    "operator_level": {},
+    "certificate_expires": {},
+    "stages": {}
+  },
+  "additionalProperties": false
+}
