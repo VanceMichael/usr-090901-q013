@@ -1,0 +1,4 @@
+# Development/test dependencies only. The runtime image installs nothing
+# beyond the Python 3.12 standard library.
+pytest>=8
+jsonschema>=4

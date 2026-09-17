@@ -1,4 +1,70 @@
+# Embodied-intelligence lab scheduling service.
+#   docker compose up scheduler --build      # serve on :8080
+#   docker compose run --rm scaffold-check   # original scaffold validation
+#   docker compose --profile selftest up \
+#       --build --abort-on-container-exit self-test   # black-box HTTP checks
+#   docker compose --profile test run --rm tests      # pytest suite
+
+x-scheduler-healthcheck: &scheduler-healthcheck
+  interval: 10s
+  timeout: 3s
+  retries: 5
+  start_period: 3s
+
 services:
+  scheduler:
+    build:
+      context: .
+    image: embodied-lab-scheduler:dev
+    ports:
+      - "8080:8080"
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8080/healthz', timeout=2).read()"]
+      <<: *scheduler-healthcheck
+    restart: unless-stopped
+
+  # Same image, different fixture: capacity-2 saturation scenarios need a
+  # third device/operator pair (see fixtures/rules-extended.json).
+  scheduler-extended:
+    build:
+      context: .
+    image: embodied-lab-scheduler:dev
+    profiles: ["selftest"]
+    ports:
+      - "8081:8080"
+    environment:
+      RULES_PATH: fixtures/rules-extended.json
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8080/healthz', timeout=2).read()"]
+      <<: *scheduler-healthcheck
+
+  self-test:
+    image: embodied-lab-scheduler:dev
+    profiles: ["selftest"]
+    depends_on:
+      scheduler:
+        condition: service_healthy
+      scheduler-extended:
+        condition: service_healthy
+    environment:
+      SCHEDULER_URL: http://scheduler:8080
+      SCHEDULER_EXTENDED_URL: http://scheduler-extended:8080
+    volumes:
+      - ./scripts:/scripts:ro
+    entrypoint: ["python", "/scripts/http_selftest.py"]
+
+  tests:
+    image: python:3.12-alpine
+    profiles: ["test"]
+    working_dir: /workspace
+    volumes:
+      - .:/workspace:ro
+    environment:
+      PIP_DISABLE_PIP_VERSION_CHECK: "1"
+    command: >
+      sh -c "pip install -q -r requirements-dev.txt &&
+             python -m pytest -q -p no:cacheprovider"
+
   scaffold-check:
     image: python:3.12-alpine
     working_dir: /workspace

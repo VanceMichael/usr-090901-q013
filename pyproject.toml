@@ -1,7 +1,13 @@
 [project]
-name = "usr-090901-013-scaffold"
-version = "0.0.0"
+name = "embodied-lab-scheduler"
+version = "1.0.0"
+description = "Pure-backend scheduling service for the embodied-intelligence teaching lab"
 requires-python = ">=3.12"
+dependencies = []
+
+[project.optional-dependencies]
+dev = ["pytest>=8", "jsonschema>=4"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+pythonpath = ["."]
