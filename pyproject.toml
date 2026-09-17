@@ -1,7 +1,16 @@
 [project]
-name = "usr-090901-013-scaffold"
-version = "0.0.0"
+name = "embodied-lab-scheduler"
+version = "1.0.0"
+description = "具身智能教学实验室机器人/实验区/指导员排程纯后台服务"
 requires-python = ">=3.12"
+dependencies = [
+    "jsonschema==4.26.0",
+]
+
+[project.scripts]
+embodied-lab-scheduler = "app.__main__:main"
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+python_files = ["test_*.py"]
+addopts = "-q"

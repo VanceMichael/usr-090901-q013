@@ -1,4 +1,29 @@
 services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: embodied-lab-scheduler:1.0.0
+    ports:
+      - "8080:8080"
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request,sys; sys.exit(0 if urllib.request.urlopen('http://127.0.0.1:8080/healthz', timeout=2).status == 200 else 1)"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+      start_period: 3s
+
+  # 容器 HTTP 黑盒自测：等 api 健康后运行，退出码即结论
+  selftest:
+    build:
+      context: .
+      dockerfile: Dockerfile.selftest
+    image: embodied-lab-scheduler-selftest:1.0.0
+    depends_on:
+      api:
+        condition: service_healthy
+    command: ["http://api:8080"]
+
   scaffold-check:
     image: python:3.12-alpine
     working_dir: /workspace

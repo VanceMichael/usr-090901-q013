@@ -1,0 +1,6 @@
+# 运行期镜像之外，额外构建一个自带黑盒自测脚本的镜像
+FROM python:3.12-alpine AS selftest
+WORKDIR /selftest
+COPY tests/selftest.py ./selftest.py
+ENTRYPOINT ["python", "/selftest/selftest.py"]
+CMD ["http://api:8080"]
